@@ -132,7 +132,7 @@ public class ActiveRecordTest {
     }
 
     @Test
-    public void courseConsistsOfEnrolledStudents() {
+    public void courseConsistsOfEnrolledStudents() throws SQLException {
         // Given
         var student1 = Student.create("Adam", "Paciaciak", 800125).orElseThrow();
         var student2 = Student.create("Jan", "Paciaciak", 800126).orElseThrow();
@@ -155,7 +155,7 @@ public class ActiveRecordTest {
     }
 
     @Test
-    public void courseStudentListIsCached() {
+    public void courseStudentListIsCached() throws SQLException {
         // Given
         var student1 = Student.create("Adam", "Paciaciak", 800125).orElseThrow();
         var student2 = Student.create("Jan", "Paciaciak", 800126).orElseThrow();

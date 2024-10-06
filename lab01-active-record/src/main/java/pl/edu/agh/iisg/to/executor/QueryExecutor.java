@@ -1,6 +1,7 @@
 package pl.edu.agh.iisg.to.executor;
 
 import pl.edu.agh.iisg.to.connection.ConnectionProvider;
+import pl.edu.agh.iisg.to.model.Student;
 import pl.edu.agh.iisg.to.query.QueryHelper;
 
 import java.sql.PreparedStatement;
@@ -8,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public final class QueryExecutor {

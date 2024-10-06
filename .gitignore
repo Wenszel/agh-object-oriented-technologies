@@ -1,6 +1,7 @@
 gradlew
 gradlew.bat
 gradle
+.gradle
 *.db
 build
 .idea
