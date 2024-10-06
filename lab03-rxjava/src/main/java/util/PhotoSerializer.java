@@ -40,6 +40,7 @@ public class PhotoSerializer {
 
     public void deleteLibraryContents() {
         File photoLibraryDirectory = new File(photoLibraryPath);
+
         for (String childFile : photoLibraryDirectory.list()) {
             File libraryFile = new File(photoLibraryPath, childFile);
             libraryFile.delete();
