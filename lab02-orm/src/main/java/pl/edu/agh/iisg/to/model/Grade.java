@@ -35,7 +35,7 @@ public class Grade {
     @JoinColumn(name = Columns.COURSE_ID)
     private Course course;
 
-    Grade() {
+    public Grade() {
     }
 
     public Grade(final Student student, final Course course, final float grade) {
@@ -54,6 +54,10 @@ public class Grade {
 
     public Student student() {
         return student;
+    }
+
+    public String getStudentFullName() {
+        return student.fullName();
     }
 
     public Course course() {

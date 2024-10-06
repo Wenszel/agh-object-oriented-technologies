@@ -1,35 +1,35 @@
 package pl.edu.agh.iisg.to.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name=Student.TABLE_NAME)
 public class Student {
 
     public static final String TABLE_NAME = "student";
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name = Columns.ID)
     private int id;
-
+    @Column(name = Columns.FIRST_NAME, nullable = false, length = 50)
     private String firstName;
-
+    @Column(name = Columns.LAST_NAME, nullable = false, length = 50)
     private String lastName;
-
+    @Column(unique = true)
     private int indexNumber;
 
-    private Set<Grade> gradeSet = new HashSet<>();
+    @OneToMany
+    private final Set<Grade> gradeSet = new HashSet<>();
 
-    private Set<Course> courseSet = new HashSet<>();
+    @ManyToMany(mappedBy = "studentSet", cascade = CascadeType.PERSIST)
 
-    Student() {
+    private final Set<Course> courseSet = new HashSet<>();
+
+    public Student() {
     }
 
     public Student(final String firstName, final String lastName, final int indexNumber) {
