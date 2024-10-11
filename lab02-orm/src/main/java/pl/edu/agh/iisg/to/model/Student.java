@@ -12,7 +12,15 @@ public class Student {
 
     public static final String TABLE_NAME = "student";
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "student_gen")
+    @TableGenerator(
+            name = "student_gen",
+            table = "id_generator",
+            pkColumnName = "gen_name",
+            valueColumnName = "gen_value",
+            pkColumnValue = "student_seq",
+            allocationSize = 1
+    )
     @Column(name = Columns.ID)
     private int id;
     @Column(name = Columns.FIRST_NAME, nullable = false, length = 50)

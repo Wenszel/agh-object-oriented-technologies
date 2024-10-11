@@ -1,15 +1,7 @@
 package pl.edu.agh.iisg.to.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -20,7 +12,15 @@ public class Grade {
     public static final String TABLE_NAME = "grade";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "grade_gen")
+    @TableGenerator(
+            name = "grade_gen",
+            table = "id_generator",
+            pkColumnName = "gen_name",
+            valueColumnName = "gen_value",
+            pkColumnValue = "grade_seq",
+            allocationSize = 1
+    )
     @Column(name = Columns.ID)
     private int id;
 
