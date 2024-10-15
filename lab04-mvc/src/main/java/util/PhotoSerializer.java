@@ -44,7 +44,7 @@ public class PhotoSerializer {
     }
 
     public void savePhoto(Photo photo) {
-        Thread.ofVirtual().start(() -> {
+        Thread thread = new Thread(() -> {
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(photo.getPhotoData(), null), "png", new File(getPhotoPath(photo)));
                 log.info("SAVE photo: " + photo.getName());
@@ -52,6 +52,7 @@ public class PhotoSerializer {
                 e.printStackTrace();
             }
         });
+        thread.start();
     }
 
     public void renamePhoto(String oldPhotoName, String newPhotoName) {
