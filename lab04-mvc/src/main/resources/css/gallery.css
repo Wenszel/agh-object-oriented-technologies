@@ -1,0 +1,16 @@
+.gallery-pane {
+    -fx-padding: 8;
+    -fx-spacing: 8;
+}
+
+.form-box {
+    -fx-spacing: 8;
+    -fx-padding: 8;
+    -fx-alignment: center-left;
+}
+
+.image-box {
+    -fx-padding: 0 0 0 8;
+}
+
+

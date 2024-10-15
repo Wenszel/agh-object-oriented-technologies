@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            minHeight="550.0" minWidth="850.0"
+            styleClass="gallery-pane"
+            stylesheets="css/gallery.css"
+            fx:controller="controller.GalleryController">
+    <top>
+        <HBox styleClass="form-box">
+            <Label text="Search for photos:" prefWidth="120"/>
+        </HBox>
+    </top>
+    <left>
+        <ListView fx:id="imagesListView" prefWidth="120"/>
+    </left>
+    <center>
+        <VBox styleClass="image-box">
+            <HBox styleClass="form-box">
+                <Label text="Picture name:"/>
+                <TextField fx:id="imageNameField" prefWidth="500"/>
+            </HBox>
+            <ScrollPane>
+                <ImageView fx:id="imageView"/>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
