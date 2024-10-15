@@ -48,6 +48,9 @@ public class GalleryController {
 
         imagesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                if (oldValue != null) {
+                    imageNameField.textProperty().unbindBidirectional(oldValue.nameProperty());
+                }
                 bindSelectedPhoto(newValue);
             }
         });
@@ -66,9 +69,7 @@ public class GalleryController {
 
     public void setModel(Gallery gallery) {
         this.galleryModel = gallery;
-        ObservableList<Photo> photos = FXCollections.observableArrayList();
-        photos.addAll(gallery.getPhotos());
-        imagesListView.setItems(photos);
+        imagesListView.setItems(gallery.getPhotos());
         imagesListView.getSelectionModel().selectFirst();
     }
 

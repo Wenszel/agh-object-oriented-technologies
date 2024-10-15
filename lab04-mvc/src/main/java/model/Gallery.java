@@ -8,13 +8,13 @@ import javafx.collections.ObservableList;
 
 public class Gallery {
 
-    private final List<Photo> photos = new ArrayList<>();
+    private final ObservableList<Photo> photos = FXCollections.observableArrayList();
 
     public void addPhoto(Photo photo) {
         photos.add(photo);
     }
 
-    public List<Photo> getPhotos() {
+    public ObservableList<Photo> getPhotos() {
         return photos;
     }
 
