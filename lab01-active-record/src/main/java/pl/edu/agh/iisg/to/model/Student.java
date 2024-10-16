@@ -95,16 +95,6 @@ public class Student {
         );
     }
 
-    public Map<Course, Float> createReport() {
-        String reportGeneratingSql = getReportGeneratingSql();
-        Object[] args = { id };
-        try {
-            return fetchReportData(reportGeneratingSql, args);
-        } catch (SQLException e) {
-            return Collections.emptyMap();
-        }
-    }
-
     private Map<Course, Float> fetchReportData(String reportSql, Object[] args) throws SQLException {
         Map<Course, Float> report = new HashMap<>();
         try (ResultSet rs = QueryExecutor.read(reportSql, args)) {

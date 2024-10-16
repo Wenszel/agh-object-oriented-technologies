@@ -48,6 +48,7 @@ public class SchoolService {
         });
     }
 
+
     public boolean gradeStudent(final Student student, final Course course, final float gradeValue) {
         return transactionService.doAsTransaction(() -> {
             Grade grade = new Grade(student, course, gradeValue);
@@ -64,7 +65,13 @@ public class SchoolService {
         return course.gradeSet().stream()
                 .collect(Collectors.groupingBy(
                         Grade::getStudentFullName,
-                        Collectors.mapping(Grade::grade, Collectors.toList())
+                        Collectors.collectingAndThen(
+                                Collectors.mapping(Grade::grade, Collectors.toList()),
+                                list -> {
+                                    list.sort(Comparator.naturalOrder());
+                                    return list;
+                                }
+                        )
                 ));
     }
 }
