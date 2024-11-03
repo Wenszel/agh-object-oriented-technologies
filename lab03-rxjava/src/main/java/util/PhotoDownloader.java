@@ -56,29 +56,29 @@ public class PhotoDownloader {
     }
 
     public Observable<Photo> searchForPhotos(List<String> searchQueries) {
-
-        PhotoProcessor photoProcessor = new PhotoProcessor();
-
         return Observable.fromIterable(searchQueries)
                 .flatMap(this::searchForPhotos)
-                .compose(this::setSchedulerBasedOnPhotoSize)
-                .compose(photoProcessor::processPhotos)
-                .observeOn(Schedulers.io())
-                .buffer(5, TimeUnit.SECONDS)
-                .flatMap(Observable::fromIterable);
+                .compose(this::processBasedOnPhotoSize);
     }
 
-    private Observable<Photo> setSchedulerBasedOnPhotoSize(@NonNull Observable<Photo> photos) {
+    private Observable<Photo> processBasedOnPhotoSize(Observable<Photo> photos) {
         return photos
                 .groupBy(PhotoSize::resolve)
-                .flatMap(this::setSuitableScheduler);
+                .flatMap(this::processGroup);
     }
 
-    private Observable<Photo> setSuitableScheduler(GroupedObservable<PhotoSize, Photo> group) {
+    private Observable<Photo> processGroup(GroupedObservable<PhotoSize, Photo> group) {
+        PhotoProcessor photoProcessor = new PhotoProcessor();
+
         return switch (Objects.requireNonNull(group.getKey())) {
-            case SMALL -> group.observeOn(Schedulers.io());
-            case MEDIUM -> group.observeOn(Schedulers.io());
-            case LARGE -> group.observeOn(Schedulers.computation());
+            case SMALL -> Observable.empty();
+            case MEDIUM -> group
+                    .observeOn(Schedulers.io())
+                    .buffer(5, TimeUnit.SECONDS)
+                    .flatMap(Observable::fromIterable);
+            case LARGE -> group
+                    .observeOn(Schedulers.computation())
+                    .compose(photoProcessor::processPhotos);
         };
     }
 
