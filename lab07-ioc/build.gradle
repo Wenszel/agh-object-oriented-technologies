@@ -1,0 +1,32 @@
+group 'pl.edu.agh.to2'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+application {
+    applicationDefaultJvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
+    mainClass = 'pl.edu.agh.school.demo.SchoolDemo'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.0'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.5.11'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.5.11'
+
+    implementation group: 'com.google.inject', name: 'guice', version: '5.0.1'
+}
