@@ -5,10 +5,13 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import org.checkerframework.checker.fenum.qual.PolyFenum;
 import pl.edu.agh.logger.ConsoleMessageSerializer;
 import pl.edu.agh.logger.FileMessageSerializer;
 import pl.edu.agh.logger.Logger;
 import pl.edu.agh.school.School;
+import pl.edu.agh.school.SchoolClass;
+import pl.edu.agh.school.SchoolClassFactory;
 import pl.edu.agh.school.SchoolDAO;
 import pl.edu.agh.school.demo.SchoolDemo;
 import pl.edu.agh.school.persistence.PersistenceManager;
@@ -27,6 +30,7 @@ public class SchoolModule extends AbstractModule {
         bind(String.class).annotatedWith(Names.named("classStorageFileName"))
                 .toInstance(CLASS_STORAGE_FILE_NAME);
         bind(String.class).annotatedWith(Names.named("logfile")).toInstance(LOG_FILE_NAME);
+
     }
     @Provides
     public PersistenceManager providePersistenceManager(
@@ -51,7 +55,12 @@ public class SchoolModule extends AbstractModule {
     }
 
     @Provides
-    public SchoolDemo provideSchoolDemo(School school) {
-        return new SchoolDemo(school);
+    public SchoolDemo provideSchoolDemo(School school, Logger logger) {
+        return new SchoolDemo(school, logger);
+    }
+
+    @Provides
+    public SchoolClassFactory provideSchoolClassFactory(Logger logger) {
+        return new SchoolClassFactory(logger);
     }
 }

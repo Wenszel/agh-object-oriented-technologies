@@ -11,23 +11,17 @@ import com.google.inject.Injector;
 import pl.edu.agh.logger.ConsoleMessageSerializer;
 import pl.edu.agh.logger.FileMessageSerializer;
 import pl.edu.agh.logger.Logger;
-import pl.edu.agh.school.DayOfWeek;
-import pl.edu.agh.school.Person;
-import pl.edu.agh.school.School;
-import pl.edu.agh.school.SchoolClass;
-import pl.edu.agh.school.Student;
-import pl.edu.agh.school.Subject;
-import pl.edu.agh.school.Teacher;
-import pl.edu.agh.school.Term;
+import pl.edu.agh.school.*;
 import pl.edu.agh.school.guice.SchoolModule;
 
 public class SchoolDemo {
 
     private final School school;
-
+    private final Logger logger;
     @Inject
-    public SchoolDemo(School school) {
+    public SchoolDemo(School school, Logger logger) {
         this.school = school;
+        this.logger = logger;
     }
 
     private final DateFormat timeFormat = new SimpleDateFormat("hh:mm");
@@ -35,8 +29,10 @@ public class SchoolDemo {
     public static void main(String[] args) throws Exception {
         Injector injector = Guice.createInjector(new SchoolModule());
         SchoolDemo schoolDemo = injector.getInstance(SchoolDemo.class);
+        SchoolClassFactory schoolClassFactory = injector.getInstance(SchoolClassFactory.class);
+
         schoolDemo.initTeachers();
-        schoolDemo.initClass();
+        schoolDemo.initClass(schoolClassFactory);
         schoolDemo.showClass();
         schoolDemo.showScheduleForClass();
         schoolDemo.showScheduleForTeacher();
@@ -54,9 +50,10 @@ public class SchoolDemo {
         }
     }
 
-    public void initClass() throws ParseException {
+    public void initClass(SchoolClassFactory schoolClassFactory) throws ParseException {
+
         if (school.findClass("1A", "humane").isEmpty()) {
-            SchoolClass schoolClass = new SchoolClass("1A", "humane");
+            SchoolClass schoolClass = schoolClassFactory.createSchoolClass("1A", "humane");
             schoolClass.addStudent(new Student("Peter", "Pan"));
             schoolClass.addStudent(new Student("Anna", "Shirley"));
             schoolClass.addStudent(new Student("Harry", "Potter"));

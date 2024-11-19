@@ -11,8 +11,7 @@ import pl.edu.agh.school.SchoolClass;
 import pl.edu.agh.school.Teacher;
 
 public final class SerializablePersistenceManager implements PersistenceManager {
-
-    private final Logger log;
+    private Logger log;
     private String teachersStorageFileName;
     private String classStorageFileName;
 
@@ -22,10 +21,12 @@ public final class SerializablePersistenceManager implements PersistenceManager 
             String classStorageFileName,
             Logger log
     ) {
+        this.log = log;
         this.teachersStorageFileName = teachersStorageFileName;
         this.classStorageFileName = classStorageFileName;
-        this.log = log;
     }
+
+
 
     public void saveTeachers(List<Teacher> teachers) {
         if (teachers == null) {

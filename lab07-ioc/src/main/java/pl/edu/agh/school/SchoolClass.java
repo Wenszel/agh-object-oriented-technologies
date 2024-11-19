@@ -1,11 +1,16 @@
 package pl.edu.agh.school;
 
+import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
 import pl.edu.agh.logger.Logger;
+import pl.edu.agh.school.guice.SchoolModule;
 
 public class SchoolClass implements Serializable {
 
@@ -13,12 +18,14 @@ public class SchoolClass implements Serializable {
 
 	private final String name;
 	private final String profile;
+	private transient Logger logger;
 
 	private final List<Student> students = new ArrayList<>();
 	private final List<Subject> subjects = new ArrayList<>();
 
-	public SchoolClass(String name, String profile) {
+	public SchoolClass(String name, String profile, Logger logger) {
 		this.name = name;
+		this.logger = logger;
 		this.profile = profile;
 	}
 
@@ -51,10 +58,15 @@ public class SchoolClass implements Serializable {
 		if (!students.contains(student)) {
 			students.add(student);
 			student.setSchoolClass(this);
-			Logger.getInstance().log(
-					"Added " + student.toString() + " to class "
-							+ this.toString());
+			logger.log(
+					"Added " + student + " to class "
+							+ this);
 		}
+	}
+
+	@Inject
+	public void setLogger(Logger logger) {
+		this.logger = logger;
 	}
 
 	public Collection<Student> getStudents() {
