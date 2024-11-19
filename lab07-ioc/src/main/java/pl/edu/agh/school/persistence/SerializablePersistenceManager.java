@@ -4,21 +4,27 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import pl.edu.agh.logger.Logger;
 import pl.edu.agh.school.SchoolClass;
 import pl.edu.agh.school.Teacher;
 
-public final class SerializablePersistenceManager {
+public final class SerializablePersistenceManager implements PersistenceManager {
 
-    private static final Logger log = Logger.getInstance();
-
+    private final Logger log;
     private String teachersStorageFileName;
-
     private String classStorageFileName;
 
-    public SerializablePersistenceManager() {
-        teachersStorageFileName = "teachers.dat";
-        classStorageFileName = "classes.dat";
+    @Inject
+    public SerializablePersistenceManager(
+            String teachersStorageFileName,
+            String classStorageFileName,
+            Logger log
+    ) {
+        this.teachersStorageFileName = teachersStorageFileName;
+        this.classStorageFileName = classStorageFileName;
+        this.log = log;
     }
 
     public void saveTeachers(List<Teacher> teachers) {
@@ -31,7 +37,23 @@ public final class SerializablePersistenceManager {
             throw new IllegalArgumentException(e);
         } catch (IOException e) {
             log.log("There was an error while saving the teachers data", e);
+        } finally {
+            log.log("Saved teachers data");
         }
+    }
+
+    @Inject
+    public void setTeachersStorageFileName(
+           @Named("teachersStorageFileName")
+            String teachersStorageFileName) {
+        this.teachersStorageFileName = teachersStorageFileName;
+    }
+
+    @Inject
+    public void setClassStorageFileName(
+           @Named("classStorageFileName")
+            String classStorageFileName) {
+        this.classStorageFileName = classStorageFileName;
     }
 
     @SuppressWarnings("unchecked")
@@ -46,6 +68,8 @@ public final class SerializablePersistenceManager {
             log.log("There was an error while loading the teachers data", e);
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
+        } finally {
+            log.log("Loaded teachers data");
         }
         return res;
     }
@@ -61,6 +85,8 @@ public final class SerializablePersistenceManager {
             throw new IllegalArgumentException(e);
         } catch (IOException e) {
             log.log("There was an error while saving the classes data", e);
+        } finally {
+            log.log("Saved classes data");
         }
     }
 
@@ -75,6 +101,8 @@ public final class SerializablePersistenceManager {
             log.log("There was an error while loading the classes data", e);
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
+        } finally {
+            log.log("Loaded classes data");
         }
         return res;
     }

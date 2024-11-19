@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import pl.edu.agh.logger.ConsoleMessageSerializer;
 import pl.edu.agh.logger.FileMessageSerializer;
 import pl.edu.agh.logger.Logger;
@@ -16,30 +19,28 @@ import pl.edu.agh.school.Student;
 import pl.edu.agh.school.Subject;
 import pl.edu.agh.school.Teacher;
 import pl.edu.agh.school.Term;
+import pl.edu.agh.school.guice.SchoolModule;
 
 public class SchoolDemo {
 
     private final School school;
 
-    private final DateFormat timeFormat = new SimpleDateFormat("hh:mm");
-
-    public SchoolDemo() {
-        school = new School();
+    @Inject
+    public SchoolDemo(School school) {
+        this.school = school;
     }
 
+    private final DateFormat timeFormat = new SimpleDateFormat("hh:mm");
+
     public static void main(String[] args) throws Exception {
-
-        Logger.getInstance().registerSerializer(new ConsoleMessageSerializer());
-        Logger.getInstance().registerSerializer(
-                new FileMessageSerializer("logfile.log"));
-
-        SchoolDemo schoolDemo = new SchoolDemo();
+        Injector injector = Guice.createInjector(new SchoolModule());
+        SchoolDemo schoolDemo = injector.getInstance(SchoolDemo.class);
         schoolDemo.initTeachers();
         schoolDemo.initClass();
         schoolDemo.showClass();
         schoolDemo.showScheduleForClass();
         schoolDemo.showScheduleForTeacher();
-    }
+        }
 
     public void initTeachers() {
         if (school.findPerson("Thomas", "Anderson").isEmpty()) {
